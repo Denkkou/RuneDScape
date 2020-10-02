@@ -1,6 +1,11 @@
 #include "UpperScreen.h"
+#include "Map.h"
+
+Map* map;
 
 UpperScreen::UpperScreen() {
+	map = new Map();
+
 	//log initialisation
 	printf("Upper Screen Initialised\n");
 }
@@ -14,8 +19,5 @@ void UpperScreen::Update() {
 }
 
 void UpperScreen::Render() {
-	//draw canvas
-	SDL_SetRenderDrawColor(GameManager::gameRenderer, 0, 0, 0, 255);
-	SDL_RenderFillRect(GameManager::gameRenderer, &canvasRect);
-
+	map->DrawMap();
 }

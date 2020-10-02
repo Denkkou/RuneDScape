@@ -1,13 +1,13 @@
 #include "GameManager.h"
+#include "TextureManager.h"
 #include "UpperScreen.h"
 #include "LowerScreen.h"
 
 //reference to the renderer
 SDL_Renderer* GameManager::gameRenderer = nullptr;
 
-//create instances of both screens
-UpperScreen upperScreen;
-LowerScreen lowerScreen;
+UpperScreen* upperScreen;
+LowerScreen* lowerScreen;
 
 GameManager::GameManager(){
 	//create window space and renderer
@@ -15,6 +15,10 @@ GameManager::GameManager(){
 	gameRenderer = SDL_CreateRenderer(gameWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 
 	gameRunning = true;
+
+	//create instances of screens
+	upperScreen = new UpperScreen();
+	lowerScreen = new LowerScreen();
 }
 GameManager::~GameManager(){}
 
@@ -44,13 +48,13 @@ void GameManager::Input() {
 			gameRunning = false;
 	}
 
-	upperScreen.Input();
-	lowerScreen.Input();
+	upperScreen->Input();
+	lowerScreen->Input();
 }
 
 void GameManager::Update() {
-	upperScreen.Update();
-	lowerScreen.Update();
+	upperScreen->Update();
+	lowerScreen->Update();
 }
 
 void GameManager::Render() {
@@ -58,8 +62,8 @@ void GameManager::Render() {
 	SDL_RenderClear(gameRenderer);
 
 	//render lower screen on top of upper
-	upperScreen.Render();
-	lowerScreen.Render();
+	upperScreen->Render();
+	lowerScreen->Render();
 
 	//push changes
 	SDL_RenderPresent(gameRenderer);

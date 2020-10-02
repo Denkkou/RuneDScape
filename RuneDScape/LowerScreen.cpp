@@ -17,7 +17,6 @@ void LowerScreen::Update() {
 }
 
 void LowerScreen::Render() {
-	//draw canvas
-	SDL_SetRenderDrawColor(GameManager::gameRenderer, 50, 0, 0, 255);
+	SDL_SetRenderDrawColor(GameManager::gameRenderer, 0, 50, 0, 255);
 	SDL_RenderFillRect(GameManager::gameRenderer, &canvasRect);
 }
