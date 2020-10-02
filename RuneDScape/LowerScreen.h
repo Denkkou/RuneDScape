@@ -2,15 +2,17 @@
 #define aLowerScreenFile
 
 /*The Lower Screen - Clickable menus and interfaces*/
+#include "ScreenBase.h"
+#include "GameManager.h"
 
-class LowerScreen {
+class LowerScreen : public ScreenBase {
 public:
 	LowerScreen();
 	~LowerScreen();
 
 	void Input();
 	void Update();
-	void Render(SDL_Renderer* gameRenderer);
+	void Render();
 };
 
 #endif 

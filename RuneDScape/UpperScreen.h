@@ -2,15 +2,17 @@
 #define anUpperScreenFile
 
 /*The Upper Screen - Displays player and world*/
+#include "ScreenBase.h"
+#include "GameManager.h"
 
-class UpperScreen {
+class UpperScreen : public ScreenBase {
 public:
 	UpperScreen();
 	~UpperScreen();
 
 	void Input();
 	void Update();
-	void Render(SDL_Renderer* gameRenderer);
+	void Render();
 };
 
 #endif 
