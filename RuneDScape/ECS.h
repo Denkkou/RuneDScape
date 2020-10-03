@@ -1,4 +1,5 @@
-#pragma once
+#ifndef anEntityComponentSystemFile
+#define anEntityComponentSystemFile
 
 /*Entity Component System*/
 #include <iostream>
@@ -126,3 +127,5 @@ public:
 private:
 	std::vector<std::unique_ptr<Entity>>  entities;
 };
+
+#endif

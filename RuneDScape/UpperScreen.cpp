@@ -1,8 +1,10 @@
 #include "UpperScreen.h"
 #include "Map.h"
 #include "ECS.h"
-#include "Components.h"
+#include "ComponentHeader.h"
+#include "Vector2D.h"
 
+//dynamic allocation
 Map* map;
 
 Manager manager;
@@ -12,7 +14,7 @@ UpperScreen::UpperScreen() {
 	map = new Map();
 
 	//ECS implementation
-	player.addComponent<PositionComponent>();
+	player.addComponent<TransformComponent>();
 	player.addComponent<SpriteComponent>("Assets/bot.png");
 
 	//log initialisation
@@ -30,6 +32,8 @@ void UpperScreen::Input() {
 void UpperScreen::Update() {
 	manager.Refresh();
 	manager.Update();
+
+	player.getComponent<TransformComponent>().position.Add(Vector2D(1, 1));
 }
 
 void UpperScreen::Render() {

@@ -1,7 +1,5 @@
 #pragma once
-
-#include "Components.h"
-#include<SDL.h>
+#include "ComponentHeader.h"
 
 class SpriteComponent : public Component {
 public:
@@ -22,7 +20,7 @@ public:
 
 	void Init() override {
 		//reference to position component
-		position = &entity->getComponent<PositionComponent>();
+		transform = &entity->getComponent<TransformComponent>();
 
 		//16x16 sprites
 		srcRect.x = srcRect.y = 0;
@@ -31,8 +29,8 @@ public:
 	}
 
 	void Update() override {
-		dstRect.x = position->x();
-		dstRect.y = position->y();
+		dstRect.x = (int)transform->position.x;
+		dstRect.y = (int)transform->position.y;
 	}
 
 	void Draw() override {
@@ -40,7 +38,7 @@ public:
 	}
 
 private:
-	PositionComponent* position;
+	TransformComponent* transform;
 	SDL_Texture* texture;
 	SDL_Rect srcRect, dstRect;
 };
