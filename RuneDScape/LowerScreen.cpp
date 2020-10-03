@@ -2,13 +2,15 @@
 
 LowerScreen::LowerScreen() {
 	//move canvasRect to lower half
-	canvasRect.y = 193;
+	canvasRect.y = 192*2;
 
 	//log initialisation
 	printf("Lower Screen Initialised\n");
 }
 
-LowerScreen::~LowerScreen() {}
+LowerScreen::~LowerScreen() {
+	//deallocate memory
+}
 
 void LowerScreen::Input() {
 }

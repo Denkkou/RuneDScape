@@ -141,6 +141,7 @@
   <ItemGroup>
     <ClCompile Include="FPSDelayTimer.cpp" />
     <ClCompile Include="GameManager.cpp" />
+    <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="LowerScreen.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Source.cpp" />
@@ -148,12 +149,16 @@
     <ClCompile Include="UpperScreen.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Components.h" />
+    <ClInclude Include="ECS.h" />
     <ClInclude Include="FPSDelayTimer.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="LowerScreen.h" />
     <ClInclude Include="Map.h" />
+    <ClInclude Include="PositionComponent.h" />
     <ClInclude Include="ScreenBase.h" />
+    <ClInclude Include="SpriteComponent.h" />
     <ClInclude Include="TextureManager.h" />
     <ClInclude Include="UpperScreen.h" />
   </ItemGroup>

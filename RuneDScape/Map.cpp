@@ -30,8 +30,11 @@ Map::Map() {
 	//size of each tile
 	src.x = 0;
 	src.y = 0;
-	src.h = dst.w = 16;
-	src.w = dst.h = 16;
+	src.h = 16;
+	src.w = 16;
+
+	dst.w = 16*2;
+	dst.h = 16*2;
 
 	dst.x = dst.y = 0;
 }
@@ -53,8 +56,8 @@ void Map::DrawMap() {
 		for (int j = 0; j < 16; j++) {
 			type = map[i][j];
 
-			dst.x = j * 16;
-			dst.y = i * 16;
+			dst.x = j * 16*2;
+			dst.y = i * 16*2;
 
 			switch (type) {
 			case 0:

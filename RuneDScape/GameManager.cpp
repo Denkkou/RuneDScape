@@ -11,7 +11,7 @@ LowerScreen* lowerScreen;
 
 GameManager::GameManager(){
 	//create window space and renderer
-	SDL_Window* gameWindow = SDL_CreateWindow("RuneDScape", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 256, 384, 0);
+	SDL_Window* gameWindow = SDL_CreateWindow("RuneDScape", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 256*2, 384*2, 0);
 	gameRenderer = SDL_CreateRenderer(gameWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 
 	gameRunning = true;
@@ -20,12 +20,16 @@ GameManager::GameManager(){
 	upperScreen = new UpperScreen();
 	lowerScreen = new LowerScreen();
 }
-GameManager::~GameManager(){}
+GameManager::~GameManager(){
+	//deallocate memory
+	delete upperScreen;
+	delete lowerScreen;
+}
 
 void GameManager::Run() {
-	//FPS control
+	//FPS control (30fps)
 	FPSDelayTimer timer;
-	const int DELTA_TIME = 16;
+	const int DELTA_TIME = 32;
 
 	//core loop
 	while (gameRunning) {

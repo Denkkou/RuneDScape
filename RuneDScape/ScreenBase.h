@@ -9,8 +9,8 @@ public:
 	ScreenBase() {  
 		canvasRect.x = 0;
 		canvasRect.y = 0;
-		canvasRect.w = 256;
-		canvasRect.h = 192;
+		canvasRect.w = 256*2;
+		canvasRect.h = 192*2;
 	};
 
 	virtual void Input() = 0;
