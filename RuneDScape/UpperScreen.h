@@ -2,6 +2,7 @@
 #define anUpperScreenFile
 
 /*The Upper Screen - Displays player and world*/
+/*This screen will also hande movement and world interaction*/
 #include "ScreenBase.h"
 #include "GameManager.h"
 
@@ -13,6 +14,8 @@ public:
 	void Input();
 	void Update();
 	void Render();
+
+	static SDL_Event _event;
 };
 
 #endif 

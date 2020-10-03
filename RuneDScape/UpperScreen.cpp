@@ -8,6 +8,7 @@
 Map* map;
 
 Manager manager;
+
 auto& player(manager.addEntity());
 
 UpperScreen::UpperScreen() {
@@ -16,9 +17,7 @@ UpperScreen::UpperScreen() {
 	//ECS implementation
 	player.addComponent<TransformComponent>();
 	player.addComponent<SpriteComponent>("Assets/bot.png");
-
-	//log initialisation
-	printf("Upper Screen Initialised\n");
+	player.addComponent<KeyboardController>();
 }
 
 UpperScreen::~UpperScreen(){
@@ -27,13 +26,12 @@ UpperScreen::~UpperScreen(){
 }
 
 void UpperScreen::Input() {
+
 }
 
 void UpperScreen::Update() {
 	manager.Refresh();
 	manager.Update();
-
-	player.getComponent<TransformComponent>().position.Add(Vector2D(1, 1));
 }
 
 void UpperScreen::Render() {

@@ -46,10 +46,9 @@ void GameManager::Run() {
 }
 
 void GameManager::Input() {
-	//polling for quit
-	while (SDL_PollEvent(&_event)) {
-		if (_event.type == SDL_QUIT)
-			gameRunning = false;
+	SDL_PollEvent(&_event);
+	if (_event.type == SDL_QUIT) {
+		gameRunning = false;
 	}
 
 	upperScreen->Input();
@@ -72,3 +71,5 @@ void GameManager::Render() {
 	//push changes
 	SDL_RenderPresent(gameRenderer);
 }
+
+

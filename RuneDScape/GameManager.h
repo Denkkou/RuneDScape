@@ -19,9 +19,8 @@ public:
 	void Render();
 
 	static SDL_Renderer* gameRenderer;
-private:
-	bool gameRunning;
 	SDL_Event _event;
+	bool gameRunning;
 };
 
 #endif
