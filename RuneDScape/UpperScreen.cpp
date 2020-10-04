@@ -4,13 +4,16 @@
 #include "Vector2D.h"
 #include "Collision.h"
 
-Map* map;
 Manager manager;
 
 std::vector<ColliderComponent*> UpperScreen::colliders;
 
 auto& player(manager.addEntity());
-auto& wall(manager.addEntity());
+
+const char* LumbridgeCastle_SS = "Assets/LumbridgeCastle_SS.png";
+
+//+96 and +224 are the pixels that were cut off.... not sure why?
+SDL_Rect UpperScreen::camera = { 0, 0, (38 * 16) + 96, (38 * 16) + 224 };
 
 enum groupLabels : std::size_t {
 	groupMap,
@@ -18,48 +21,46 @@ enum groupLabels : std::size_t {
 	groupColliders
 };
 
-UpperScreen::UpperScreen() {
-	map = new Map();
+//group lists
+auto& tiles(manager.getGroup(groupMap));
+auto& players(manager.getGroup(groupPlayers));
 
+UpperScreen::UpperScreen() {
 	//ECS implementation
-	Map::LoadMap("Assets/testMap16x16.map", 16, 16);
+	Map::LoadMap("Assets/LumbridgeCastle_Map.map", 38, 38);
 
 	//basic player
-	player.addComponent<TransformComponent>(0, 4, 16, 20, 2);
+	player.addComponent<TransformComponent>(0, 0, 16, 20, 2);
 	player.addComponent<SpriteComponent>("Assets/playerSpriteSheet.png", true);
 	player.addComponent<KeyboardController>();
 	player.addComponent<ColliderComponent>("player");
 	player.addGroup(groupPlayers);
-
-	//create test wall
-	wall.addComponent<TransformComponent>(160.0f, 32.0f, 16, 48, 2);
-	wall.addComponent<SpriteComponent>("Assets/wall.png");
-	wall.addComponent<ColliderComponent>("wall");
-	wall.addGroup(groupMap);
 }
 
 UpperScreen::~UpperScreen(){
-	//deallocate memory
-	delete map;
 }
 
 void UpperScreen::Input() {
-
 }
 
 void UpperScreen::Update() {
 	manager.Refresh();
 	manager.Update();
 
-	//detect player collision
-	for (auto cc : colliders) {
-		Collision::AABB(player.getComponent<ColliderComponent>(), *cc);
-	}
-}
+	//centre player
+	camera.x = player.getComponent<TransformComponent>().position.x - (256);
+	camera.y = player.getComponent<TransformComponent>().position.y - (192);
 
-//group lists
-auto& tiles(manager.getGroup(groupMap));
-auto& players(manager.getGroup(groupPlayers));
+	//camera bounds
+	if (camera.x < 0) 
+		camera.x = 0;
+	if (camera.y < 0)
+		camera.y = 0;
+	if (camera.x > camera.w)
+		camera.x = camera.w;
+	if (camera.y > camera.h)
+		camera.y = camera.h;
+}
 
 void UpperScreen::Render() {
 	//render layers
@@ -72,8 +73,8 @@ void UpperScreen::Render() {
 	}
 }
 
-void UpperScreen::AddTile(int id, int x, int y) {
+void UpperScreen::AddTile(int srcX, int srcY, int posX, int posY) {
 	auto& tile(manager.addEntity());
-	tile.addComponent<TileComponent>(x, y, 16, 16, id);
+	tile.addComponent<TileComponent>(srcX, srcY, posX, posY, LumbridgeCastle_SS);
 	tile.addGroup(groupMap);
 }

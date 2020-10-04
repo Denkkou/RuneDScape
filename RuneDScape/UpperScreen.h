@@ -18,8 +18,9 @@ public:
 	void Update();
 	void Render();
 
-	static void AddTile(int id, int x, int y);
+	static void AddTile(int srcX, int srcY, int posX, int posY);
 
+	static SDL_Rect camera;
 	static SDL_Event _event;
 
 	//list of colliders

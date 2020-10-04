@@ -19,8 +19,9 @@ public:
 	}
 
 	TransformComponent(int s) {
-		position.Zero();
 		scale = s;
+		position.x = (128 * scale);
+		position.y = (88 * scale);
 	}
 
 	TransformComponent(float x, float y) {
@@ -29,11 +30,11 @@ public:
 	}
 
 	TransformComponent(float x, float y, int w, int h, int s) {
-		position.x = x;
-		position.y = y;
 		width = w;
 		height = h;
 		scale = s;
+		position.x = (128 * scale);
+		position.y = (88 * scale + 8);
 	}
 
 	void Init() override {

@@ -17,7 +17,7 @@ public:
 		SetTexture(filePath);
 	}
 
-	//animated overload
+	//animated overload currently only for player
 	SpriteComponent(const char* filePath, bool isAnimated) {
 		animated = isAnimated;
 
@@ -73,8 +73,8 @@ public:
 		//set index
 		srcRect.y = animIndex * transform->height;
 
-		dstRect.x = static_cast<int>(transform->position.x);
-		dstRect.y = static_cast<int>(transform->position.y);
+		dstRect.x = static_cast<int>(transform->position.x) - UpperScreen::camera.x;
+		dstRect.y = static_cast<int>(transform->position.y) - UpperScreen::camera.y;
 		dstRect.w = transform->width * transform->scale;
 		dstRect.h = transform->height * transform->scale;
 	}

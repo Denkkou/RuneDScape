@@ -3,43 +3,38 @@
 
 class TileComponent : public Component {
 public:
-	TransformComponent* transform;
-	SpriteComponent* sprite;
-
-	SDL_Rect tileRect;
-	int tileID;
-	const char* filePath;
+	SDL_Texture* texture;
+	SDL_Rect srcRect, dstRect;
+	Vector2D position;
 
 	TileComponent() = default;
 	
-	TileComponent(int x, int y, int w, int h, int id) {
-		tileRect.x = x;
-		tileRect.y = y;
-		tileRect.w = w;
-		tileRect.h = h;
-		tileID = id;
-
-		//set up tile IDs
-		switch (tileID) {
-		case 0:
-			filePath = "Assets/water.png";
-			break;
-		case 1:
-			filePath = "Assets/dirt.png";
-			break;
-		case 2:
-			filePath = "Assets/wall.png";
-			break;
-		default:
-			break;
-		}
+	~TileComponent() {
+		SDL_DestroyTexture(texture);
 	}
 
-	void Init() override {
-		entity->addComponent<TransformComponent>((float)tileRect.x, (float)tileRect.y, tileRect.w, tileRect.h, 2);
-		transform = &entity->getComponent<TransformComponent>();
+	TileComponent(int srcX, int srcY, int posX, int posY, const char* filePath) {
+		texture = TextureManager::LoadTexture(filePath);
 
-		entity->addComponent<SpriteComponent>(filePath);
-		sprite = &entity->getComponent<SpriteComponent>();
+		position.x = posX;
+		position.y = posY;
+
+		srcRect.x = srcX;
+		srcRect.y = srcY;
+		srcRect.w = srcRect.h = 16;
+
+		//destination
+		dstRect.x = posX;
+		dstRect.y = posY;
+		dstRect.w = dstRect.h = (16 * 2);
+	}
+
+	void Update() override {
+		dstRect.x = position.x - UpperScreen::camera.x;
+		dstRect.y = position.y - UpperScreen::camera.y;
+	}
+
+	void Draw() override {
+		TextureManager::Draw(texture, srcRect, dstRect, SDL_FLIP_NONE);
 	}
 };
