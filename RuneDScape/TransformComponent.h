@@ -28,11 +28,11 @@ public:
 		position.y = y;
 	}
 
-	TransformComponent(float x, float y, int h, int w, int s) {
+	TransformComponent(float x, float y, int w, int h, int s) {
 		position.x = x;
 		position.y = y;
-		height = h;
 		width = w;
+		height = h;
 		scale = s;
 	}
 

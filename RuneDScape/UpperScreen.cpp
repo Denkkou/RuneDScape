@@ -25,8 +25,8 @@ UpperScreen::UpperScreen() {
 	Map::LoadMap("Assets/testMap16x16.map", 16, 16);
 
 	//basic player
-	player.addComponent<TransformComponent>();
-	player.addComponent<SpriteComponent>("Assets/bot.png");
+	player.addComponent<TransformComponent>(0, 4, 16, 20, 2);
+	player.addComponent<SpriteComponent>("Assets/playerSpriteSheet.png", true);
 	player.addComponent<KeyboardController>();
 	player.addComponent<ColliderComponent>("player");
 	player.addGroup(groupPlayers);

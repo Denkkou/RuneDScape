@@ -1,11 +1,48 @@
 #pragma once
+#include "Animation.h"
 #include "ComponentHeader.h"
+#include <map>
 
 class SpriteComponent : public Component {
 public:
+	int animIndex = 0;
+	std::map<const char*, Animation> animations;
+
+	//flip flag
+	SDL_RendererFlip spriteFlip = SDL_FLIP_NONE;
+
 	SpriteComponent() = default;
 
 	SpriteComponent(const char* filePath) {
+		SetTexture(filePath);
+	}
+
+	//animated overload
+	SpriteComponent(const char* filePath, bool isAnimated) {
+		animated = isAnimated;
+
+		//player animations
+		Animation idleD = Animation(0, 2, 600);
+		animations.emplace("IdleD", idleD);
+
+		Animation idleU = Animation(1, 2, 600);
+		animations.emplace("IdleU", idleU);
+
+		Animation walkR = Animation(2, 4, 200);
+		animations.emplace("WalkR", walkR);
+
+		Animation walkL = Animation(3, 4, 200);
+		animations.emplace("WalkL", walkL);
+
+		Animation walkD = Animation(4, 4, 200);
+		animations.emplace("WalkD", walkD);
+
+		Animation walkU = Animation(5, 4, 200);
+		animations.emplace("WalkU", walkU);
+
+		//default state
+		Play("IdleD");
+
 		SetTexture(filePath);
 	}
 
@@ -29,6 +66,13 @@ public:
 	}
 
 	void Update() override {
+		if (animated) {
+			srcRect.x = srcRect.w * static_cast<int>((SDL_GetTicks() / speed) % frames);
+		}
+
+		//set index
+		srcRect.y = animIndex * transform->height;
+
 		dstRect.x = static_cast<int>(transform->position.x);
 		dstRect.y = static_cast<int>(transform->position.y);
 		dstRect.w = transform->width * transform->scale;
@@ -36,11 +80,21 @@ public:
 	}
 
 	void Draw() override {
-		TextureManager::Draw(texture, srcRect, dstRect);
+		TextureManager::Draw(texture, srcRect, dstRect, spriteFlip);
+	}
+
+	void Play(const char* animName) {
+		frames = animations[animName].frames;
+		animIndex = animations[animName].index;
+		speed = animations[animName].speed;
 	}
 
 private:
 	TransformComponent* transform;
 	SDL_Texture* texture;
 	SDL_Rect srcRect, dstRect;
+
+	bool animated = false;
+	int frames = 0;
+	int speed = 100; //delay in ms
 };
