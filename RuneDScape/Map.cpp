@@ -8,7 +8,7 @@ Map::Map() {
 Map::~Map(){
 }
 
-void Map::LoadMap(std::string filePath, int sizeX, int sizeY){
+void Map::LoadMap(std::string filePath, int sizeX, int sizeY, const char* spritePath, int group){
 	char c;
 	std::fstream mapFile;
 
@@ -24,7 +24,7 @@ void Map::LoadMap(std::string filePath, int sizeX, int sizeY){
 			mapFile.get(c);
 			srcX = atoi(&c) * 16;
 
-			UpperScreen::AddTile(srcX, srcY, x * (16 * 2), y * (16 * 2));
+			UpperScreen::AddTile(srcX, srcY, x * (16 * 2), y * (16 * 2), spritePath, group);
 			mapFile.ignore();
 		}
 	}

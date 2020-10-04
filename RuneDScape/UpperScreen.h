@@ -18,7 +18,7 @@ public:
 	void Update();
 	void Render();
 
-	static void AddTile(int srcX, int srcY, int posX, int posY);
+	static void AddTile(int srcX, int srcY, int posX, int posY, const char* filePath, int group);
 
 	static SDL_Rect camera;
 	static SDL_Event _event;

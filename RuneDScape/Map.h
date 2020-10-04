@@ -8,7 +8,7 @@ public:
 	Map();
 	~Map();
 
-	static void LoadMap(std::string filePath, int sizeX, int sizeY);
+	static void LoadMap(std::string filePath, int sizeX, int sizeY, const char* spritePath, int group);
 
 private:
 
