@@ -5,6 +5,9 @@
 /*This screen will also hande movement and world interaction*/
 #include "ScreenBase.h"
 #include "GameManager.h"
+#include <vector>
+
+class ColliderComponent;
 
 class UpperScreen : public ScreenBase {
 public:
@@ -15,7 +18,12 @@ public:
 	void Update();
 	void Render();
 
+	static void AddTile(int id, int x, int y);
+
 	static SDL_Event _event;
+
+	//list of colliders
+	static std::vector<ColliderComponent*> colliders;
 };
 
 #endif 

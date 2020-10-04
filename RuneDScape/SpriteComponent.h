@@ -24,13 +24,15 @@ public:
 
 		//16x16 sprites
 		srcRect.x = srcRect.y = 0;
-		srcRect.w = srcRect.h = 16;
-		dstRect.w = dstRect.h = 16 * 2;
+		srcRect.w = transform->width;
+		srcRect.h = transform->height;
 	}
 
 	void Update() override {
-		dstRect.x = (int)transform->position.x;
-		dstRect.y = (int)transform->position.y;
+		dstRect.x = static_cast<int>(transform->position.x);
+		dstRect.y = static_cast<int>(transform->position.y);
+		dstRect.w = transform->width * transform->scale;
+		dstRect.h = transform->height * transform->scale;
 	}
 
 	void Draw() override {

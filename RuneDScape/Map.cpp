@@ -1,72 +1,27 @@
 #include "Map.h"
-#include "TextureManager.h"
-
-//test map
-int testMap[16][16] = { 
-	{0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1 ,0 ,1 ,0 ,1},
-	{1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0 ,1 ,0 ,1 ,0},
-	{0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1 ,0 ,1 ,0 ,1},
-	{1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0 ,1 ,0 ,1 ,0},
-	{0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1 ,0 ,1 ,0 ,1},
-	{1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0 ,1 ,0 ,1 ,0},
-	{0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1 ,0 ,1 ,0 ,1},
-	{1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0 ,1 ,0 ,1 ,0},
-	{0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1 ,0 ,1 ,0 ,1},
-	{1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0 ,1 ,0 ,1 ,0},
-	{0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1 ,0 ,1 ,0 ,1},
-	{1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0 ,1 ,0 ,1 ,0},
-	{0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1 ,0 ,1 ,0 ,1},
-	{1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0 ,1 ,0 ,1 ,0},
-	{0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1 ,0 ,1 ,0 ,1},
-	{1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0 ,1 ,0 ,1 ,0}
-};
+#include "UpperScreen.h"
+#include <fstream>
 
 Map::Map() {
-	dirt = TextureManager::LoadTexture("Assets/dirt.png");
-	water = TextureManager::LoadTexture("Assets/water.png");
-
-	LoadMap(testMap);
-
-	//size of each tile
-	src.x = 0;
-	src.y = 0;
-	src.h = 16;
-	src.w = 16;
-
-	dst.w = 16*2;
-	dst.h = 16*2;
-
-	dst.x = dst.y = 0;
 }
 
-Map::~Map(){}
-
-void Map::LoadMap(int arr[16][16]){
-	for (int i = 0; i < 16; i++) {
-		for (int j = 0; j < 16; j++) {
-			map[i][j] = arr[i][j];
-		}
-	}
+Map::~Map(){
 }
 
-void Map::DrawMap() {
-	int type = 0;
+void Map::LoadMap(std::string filePath, int sizeX, int sizeY){
+	char tile;
+	std::fstream mapFile;
 
-	for (int i = 0; i < 16; i++) {
-		for (int j = 0; j < 16; j++) {
-			type = map[i][j];
+	mapFile.open(filePath);
 
-			dst.x = j * 16*2;
-			dst.y = i * 16*2;
-
-			switch (type) {
-			case 0:
-				TextureManager::Draw(dirt, src, dst);
-				break;
-			case 1:
-				TextureManager::Draw(water, src, dst);
-				break;
-			}
+	//parse the file
+	for (int y = 0; y < sizeY; y++) {
+		for (int x = 0; x < sizeX; x++) {
+			mapFile.get(tile);
+			UpperScreen::AddTile(atoi(&tile), x * (16 * 2), y * (16 * 2));
+			mapFile.ignore();
 		}
 	}
+
+	mapFile.close();
 }
