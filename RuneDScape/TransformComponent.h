@@ -33,8 +33,8 @@ public:
 		width = w;
 		height = h;
 		scale = s;
-		position.x = (128 * scale);
-		position.y = (88 * scale + 8);
+		position.x = (x * scale);
+		position.y = (y * scale);
 	}
 
 	void Init() override {

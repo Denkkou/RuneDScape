@@ -5,41 +5,35 @@
 #include "Collision.h"
 
 Manager manager;
-
-std::vector<ColliderComponent*> UpperScreen::colliders;
+Map* map;
+Map* terrain;
 
 auto& player(manager.addEntity());
-
-const char* LumbridgeCastle_SS = "Assets/LumbridgeCastle_SS.png";
-const char* LumbridgeCastleWalls_SS = "Assets/LumbridgeCastleWalls_SS.png";
 
 //+96 and +224 are the pixels that were cut off.... not sure why?
 SDL_Rect UpperScreen::camera = { 0, 0, (38 * 16) + 96, (38 * 16) + 224 };
 
-enum groupLabels : std::size_t {
-	groupMap,
-	groupWalls,
-	groupPlayers,
-	groupColliders
-};
-
-//group lists
-auto& tiles(manager.getGroup(groupMap));
-auto& walls(manager.getGroup(groupWalls));
-auto& players(manager.getGroup(groupPlayers));
-
 UpperScreen::UpperScreen() {
-	//creating the tile maps, passing map, size, tileset and group
-	Map::LoadMap("Assets/LumbridgeCastle_Map.map", 38, 38, LumbridgeCastle_SS, groupMap);
-	Map::LoadMap("Assets/LumbridgeCastleWalls_Map.map", 38, 38, LumbridgeCastleWalls_SS, groupWalls);
+	map = new Map("Assets/LumbridgeCastleWalls_SS.png", 2, 16);
+	terrain = new Map("Assets/LumbridgeCastle_SS.png", 2, 16);
+
+	//order in which loaded is also render order!
+	terrain->LoadMap("Assets/LumbridgeCastle_Map.map", 38, 38);
+	map->LoadMap("Assets/LumbridgeCastleWalls_Map.map", 38, 38);
 
 	//basic player
-	player.addComponent<TransformComponent>(0, 0, 16, 20, 2);
+	player.addComponent<TransformComponent>(224, 224, 16, 20, 2);
 	player.addComponent<SpriteComponent>("Assets/playerSpriteSheet.png", true);
 	player.addComponent<KeyboardController>();
 	player.addComponent<ColliderComponent>("player");
+
 	player.addGroup(groupPlayers);
 }
+
+//group lists
+auto& tiles(manager.getGroup(UpperScreen::groupMap));
+auto& colliders(manager.getGroup(UpperScreen::groupColliders));
+auto& players(manager.getGroup(UpperScreen::groupPlayers));
 
 UpperScreen::~UpperScreen(){
 }
@@ -48,8 +42,19 @@ void UpperScreen::Input() {
 }
 
 void UpperScreen::Update() {
+	//player position before move
+	SDL_Rect playerCol = player.getComponent<ColliderComponent>().collider;
+	Vector2D playerPos = player.getComponent<TransformComponent>().position;
+
 	manager.Refresh();
 	manager.Update();
+
+	for (auto& c : colliders) {
+		SDL_Rect cCol = c->getComponent<ColliderComponent>().collider;
+		if (Collision::AABB(cCol, playerCol)) {
+			player.getComponent<TransformComponent>().position = playerPos;
+		}
+	}
 
 	//centre player
 	camera.x = player.getComponent<TransformComponent>().position.x - (256);
@@ -72,17 +77,11 @@ void UpperScreen::Render() {
 		t->Draw();
 	}
 
-	for (auto& w : walls) {
-		w->Draw();
+	for (auto& c : colliders) {
+		c->Draw();
 	}
 
 	for (auto& p : players) {
 		p->Draw();
 	}
-}
-
-void UpperScreen::AddTile(int srcX, int srcY, int posX, int posY, const char* filePath, int group) {
-	auto& tile(manager.addEntity());
-	tile.addComponent<TileComponent>(srcX, srcY, posX, posY, filePath);
-	tile.addGroup(group);
 }

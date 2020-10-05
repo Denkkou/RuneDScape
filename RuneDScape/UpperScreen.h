@@ -18,13 +18,15 @@ public:
 	void Update();
 	void Render();
 
-	static void AddTile(int srcX, int srcY, int posX, int posY, const char* filePath, int group);
-
 	static SDL_Rect camera;
 	static SDL_Event _event;
 
-	//list of colliders
-	static std::vector<ColliderComponent*> colliders;
+	enum groupLabels : std::size_t {
+		groupMap,
+		groupWalls,
+		groupPlayers,
+		groupColliders
+	};
 };
 
 #endif 
